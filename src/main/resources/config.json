@@ -1,0 +1,33 @@
+{
+  "clusterServersConfig": {
+    "idleConnectionTimeout": 10000,
+    "pingTimeout": 1000,
+    "connectTimeout": 10000,
+    "timeout": 3000,
+    "retryAttempts": 3,
+    "retryInterval": 1500,
+    "reconnectionTimeout": 3000,
+    "failedAttempts": 3,
+    "password": null,
+    "subscriptionsPerConnection": 5,
+    "clientName": null,
+    "loadBalancer": {
+      "class": "org.redisson.connection.balancer.RoundRobinLoadBalancer"
+    },
+    "slaveConnectionMinimumIdleSize": 1,
+    "slaveConnectionPoolSize": 1,
+    "masterConnectionMinimumIdleSize": 1,
+    "masterConnectionPoolSize": 1,
+    "readMode": "SLAVE",
+    "nodeAddresses": [
+      "redis://127.0.0.1:7000",
+      "redis://127.0.0.1:7002",
+      "redis://127.0.0.1:7004"
+    ],
+    "scanInterval": 1000
+  },
+  "threads": 1,
+  "nettyThreads": 1,
+  "codec": null,
+  "useLinuxNativeEpoll": false
+}

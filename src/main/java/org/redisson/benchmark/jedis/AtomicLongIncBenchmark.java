@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,29 +25,29 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 /**
- * 
+ *
  * @author Nikita Koksharov
  *
  */
 public class AtomicLongIncBenchmark {
 
-    public static void main(String[] args) throws InterruptedException {
-        Bench<JedisPool> bench = new JedisBench() {
-            @Override
-            public void executeOperation(String data, JedisPool benchInstance, int threadNumber, int iteration,
-                    MetricRegistry metrics) {
-                Jedis jedis = benchInstance.getResource();
-                
-                Timer.Context time = metrics.timer("incr").time();
-                jedis.incr("incr_" + threadNumber + "_" + iteration);
-                time.stop();
-                
-                jedis.close();
-            }
-        };
-        
-        Benchmark benchmark = new Benchmark(bench);
-        benchmark.run(args);
-    }
+  public static void main(String[] args) throws InterruptedException {
+    Bench<JedisPool> bench = new JedisBench() {
+      @Override
+      public void executeOperation(String data, JedisPool benchInstance, int threadNumber, int iteration,
+                                   MetricRegistry metrics) {
+        Jedis jedis = benchInstance.getResource();
+
+        Timer.Context time = metrics.timer("incr").time();
+        jedis.incr("incr_" + threadNumber + "_" + iteration);
+        time.stop();
+
+        jedis.close();
+      }
+    };
+
+    Benchmark benchmark = new Benchmark(bench);
+    benchmark.run(args);
+  }
 
 }

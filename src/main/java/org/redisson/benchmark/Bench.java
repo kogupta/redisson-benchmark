@@ -20,9 +20,11 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  *
@@ -38,9 +40,12 @@ public interface Bench<T> {
 
   void shutdown(T instance);
 
-  static RedissonClient clusterConfig() {
+  static RedissonClient clusterConfig(String resourceName) {
     try {
-      Config c = Config.fromJSON(new File("/home/kohgupta/depot/redisson-benchmark/src/main/resources/config.json"));
+      ClassLoader ctxCl = Thread.currentThread().getContextClassLoader();
+      ClassLoader loader = ctxCl != null ? ctxCl : Bench.class.getClassLoader();
+      URL url = loader.getResource(resourceName);
+      Config c = Config.fromJSON(url);
       RedissonClient r = Redisson.create(c);
       r.getKeys().flushdb();
       return r;
@@ -58,6 +63,7 @@ public interface Bench<T> {
         .setConnectionPoolSize(connections)
         .setConnectionMinimumIdleSize(connections);
     c.setCodec(StringCodec.INSTANCE);
+    c.setUseLinuxNativeEpoll(true);
 
     RedissonClient r = Redisson.create(c);
     r.getKeys().flushdb();
